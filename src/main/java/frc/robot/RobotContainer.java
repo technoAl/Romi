@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.commands.drivetrain.DriveCommand;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -16,6 +18,8 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+  public DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -39,6 +43,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new PrintCommand("Auto command");
+    return new DriveCommand(this);
   }
 }
