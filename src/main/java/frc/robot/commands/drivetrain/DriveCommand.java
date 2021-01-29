@@ -15,11 +15,12 @@ public class DriveCommand extends CommandBase{
     @Override
     public void initialize(){
         drivetrainSubsystem.resetEncoder();
+        drivetrainSubsystem.resetGyro();
     }
 
     @Override
     public void execute(){
-        drivetrainSubsystem.driveForward(1440);
+        drivetrainSubsystem.turn(180);
     }
 
     @Override
