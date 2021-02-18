@@ -10,6 +10,7 @@ public class DriveCommand extends CommandBase{
 
     public DriveCommand(RobotContainer robotContainer){
         drivetrainSubsystem = robotContainer.drivetrainSubsystem;
+        addRequirements(drivetrainSubsystem);
     }
 
     @Override
