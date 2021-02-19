@@ -25,19 +25,25 @@ public class DrivetrainSubsystem extends SubsystemBase{
         rightMotor = new Spark(DrivetrainConstants.RIGHT_MOTOR_PORT);
         leftMotor = new Spark(DrivetrainConstants.LEFT_MOTOR_PORT);
         rightMotor.setInverted(true);
+
         rightEncoder = new Encoder(DrivetrainConstants.RIGHT_ENCODER_A, DrivetrainConstants.RIGHT_ENCODER_B);
         leftEncoder = new Encoder(DrivetrainConstants.LEFT_ENCODER_A, DrivetrainConstants.LEFT_ENCODER_B);
+        rightEncoder.setDistancePerPulse(DrivetrainConstants.METERS_PER_PULSE);
+        leftEncoder.setDistancePerPulse(DrivetrainConstants.METERS_PER_PULSE);
+
         pid = new PIDController(0.001, 0, 0);
         pid2 = new PIDController(0.005, 0,0 );
         pid.setTolerance(5, 10);
+
         romiGyro = new RomiGyro();
-        drive = new DifferentialDrive(leftMotor, rightMotor)
-        //odometry = new DifferentialDriveOdometry(romiGyro.getAngleZ());
+        drive = new DifferentialDrive(leftMotor, rightMotor);
+        odometry = new DifferentialDriveOdometry(romiGyro.getRotation2d());
+
     }
 
     @Override
     public void periodic() {
-        //odometry.update(romiGyro.getAngleZ(), leftEncoder.getDistance(), rightEncoder.getDistance());
+        odometry.update(romiGyro.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
     }
 
     public Pose2d getPose() {
@@ -87,4 +93,12 @@ public class DrivetrainSubsystem extends SubsystemBase{
         rightMotor.setVoltage(-rightVolts);
         drive.feed();
     }
+
+    public void setMaxOutput(double maxOutput) {
+       drive.setMaxOutput(maxOutput);
+      }
+
+      public double getHeading() {
+        return romiGyro.getRotation2d().getDegrees();
+      }
 }
