@@ -9,9 +9,13 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.commands.autos.Trajectories;
 
 public class BasicTrajectory extends Trajectories {
-    private static final Pose2d END_POINT = new Pose2d(1, 0, new Rotation2d(0));
+    private static final Pose2d END_POINT = new Pose2d(0.25, 0, new Rotation2d(0));
     public static final Trajectory MOVE = TrajectoryGenerator.generateTrajectory(
-        List.of(new Pose2d(0, 0, new Rotation2d(0)), END_POINT), 
+        List.of(
+            new Pose2d(0, 0, new Rotation2d(0)), 
+            new Pose2d(0.25, 0, new Rotation2d(0)),
+            new Pose2d(0.25, 0.25, new Rotation2d(90))
+            ), 
         FORWARD_CONFIG);
     
 }

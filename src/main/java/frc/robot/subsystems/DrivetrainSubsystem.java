@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.sensors.RomiGyro;
 import frc.robot.Constants.DrivetrainConstants;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -17,6 +19,8 @@ public class DrivetrainSubsystem extends SubsystemBase{
     private PIDController pid, pid2;
     private RomiGyro romiGyro;
 
+    private final Field2d field2d = new Field2d();
+
     private final DifferentialDriveOdometry odometry;
 
     private final DifferentialDrive drive;
@@ -24,12 +28,13 @@ public class DrivetrainSubsystem extends SubsystemBase{
     public DrivetrainSubsystem() {
         rightMotor = new Spark(DrivetrainConstants.RIGHT_MOTOR_PORT);
         leftMotor = new Spark(DrivetrainConstants.LEFT_MOTOR_PORT);
-        rightMotor.setInverted(true);
+        // rightMotor.setInverted(true);
 
         rightEncoder = new Encoder(DrivetrainConstants.RIGHT_ENCODER_A, DrivetrainConstants.RIGHT_ENCODER_B);
         leftEncoder = new Encoder(DrivetrainConstants.LEFT_ENCODER_A, DrivetrainConstants.LEFT_ENCODER_B);
         rightEncoder.setDistancePerPulse(DrivetrainConstants.METERS_PER_PULSE);
         leftEncoder.setDistancePerPulse(DrivetrainConstants.METERS_PER_PULSE);
+        // rightEncoder.setReverseDirection(true);
 
         pid = new PIDController(0.001, 0, 0);
         pid2 = new PIDController(0.005, 0,0 );
@@ -38,12 +43,16 @@ public class DrivetrainSubsystem extends SubsystemBase{
         romiGyro = new RomiGyro();
         drive = new DifferentialDrive(leftMotor, rightMotor);
         odometry = new DifferentialDriveOdometry(romiGyro.getRotation2d());
-
+        SmartDashboard.putData("field", field2d);
+        resetEncoder();
+        resetGyro();
     }
 
     @Override
     public void periodic() {
         odometry.update(romiGyro.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
+
+        field2d.setRobotPose(getPose());
     }
 
     public Pose2d getPose() {
@@ -76,8 +85,8 @@ public class DrivetrainSubsystem extends SubsystemBase{
         romiGyro.reset();
     }
 
-    public void getGyro(){
-        romiGyro.getAngleZ();
+    public double getGyroAngleZ(){
+        return romiGyro.getAngleZ();
     }
 
     public double getTurnRate() {
@@ -98,7 +107,14 @@ public class DrivetrainSubsystem extends SubsystemBase{
        drive.setMaxOutput(maxOutput);
       }
 
-      public double getHeading() {
+    public double getHeading() {
         return romiGyro.getRotation2d().getDegrees();
-      }
+    }
+
+    public void resetOdometry(Pose2d pose) {
+        resetEncoder();
+        odometry.resetPosition(pose, romiGyro.getRotation2d());
+    }
+
+    
 }

@@ -27,7 +27,7 @@ public final class Constants {
 
         public static final double COUNTS_PER_REVOLUTION = 1440.0;
         public static final double WHEEL_DIAMETER_INCH = 2.75591;
-        public static final double WHEEL_DIAMETER_METERS = 0.7;
+        public static final double WHEEL_DIAMETER_METERS = 0.07;
         public static final double INCHES_PER_PULSE = (Math.PI * WHEEL_DIAMETER_INCH) / COUNTS_PER_REVOLUTION;
         public static final double METERS_PER_PULSE = (Math.PI * WHEEL_DIAMETER_METERS) / COUNTS_PER_REVOLUTION;
     }
@@ -40,10 +40,10 @@ public final class Constants {
         public static final double V_VOLT_SECONDS_PER_METER = 6.55;
         public static final double A_VOLT_SECONDS_SQUARED_PER_METER = 0.0185;
 
-        public static final double P_DRIVE_VEL = 0.00185;
+        public static final double P_DRIVE_VEL = 0.00185/2;
 
-        public static final double RAMSETE_B = 2;
-        public static final double RAMSETE_ZETA = 0.7;
+        public static final double RAMSETE_B = 2/2;
+        public static final double RAMSETE_ZETA = 0.7/2;
 
         public static final double MAX_SPEED_METERS_PER_SECOND = 0.8;
         public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 0.8;
